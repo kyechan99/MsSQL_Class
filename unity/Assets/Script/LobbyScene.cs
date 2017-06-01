@@ -51,4 +51,9 @@ public class LobbyScene : MonoBehaviour
             }
         }
     }
+
+    public void getUserCharInfoBT()
+    {
+
+    }
 }

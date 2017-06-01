@@ -1,12 +1,15 @@
 <?php
+require_once 'g_config.php';
+?>
+<?php
 $param = json_decode(base64_decode(urldecode(file_get_contents("php://input"))), true);
 
 $id = $param['id'];
 $pw = $param['pw'];
 $name = $param['name'];
 
-$conn = mssql_connect("127.0.0.1", "kyechan99", "henry0814");
-mssql_select_db("Game", $conn);
+$conn = mssql_connect($DB['host'], $DB['id'], $DB['pw']);
+mssql_select_db($DB['db'], $conn);
 
 $stmt = mssql_init('dbo.USP_CREATE_USER', $conn);;
 
