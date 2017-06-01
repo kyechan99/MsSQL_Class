@@ -1,7 +1,7 @@
 ﻿namespace GM
 {
     [System.Serializable]
-    public class User
+    public struct User
     {
         public string id;
         public string pw;
