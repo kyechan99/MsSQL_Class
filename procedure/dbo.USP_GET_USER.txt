@@ -1,0 +1,22 @@
+USE [Game]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_GET_USER]    Script Date: 2017-06-01 ¿ÀÈÄ 9:24:53 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[USP_GET_USER]
+(
+    @id nvarchar(50),   
+    @pw nvarchar(50) 
+)  
+AS   
+ DECLARE @Count int
+ SELECT @Count = count(*) FROM F_User WHERE @id = f_id AND @pw = f_pw
+ 
+ if @Count = 1
+	Begin
+		SELECT f_id, f_name, f_join_date, f_last_login_date, f_heart FROM F_User WHERE @id = f_id;
+	End
+ ELSE
+	SELECT 'FAIL_LOGIN'

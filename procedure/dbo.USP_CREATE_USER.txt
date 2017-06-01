@@ -1,0 +1,23 @@
+USE [Game]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_CREATE_USER]    Script Date: 2017-06-01 ¿ÀÈÄ 9:24:20 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[USP_CREATE_USER]
+(
+@id nvarchar(50),
+@pw nvarchar(50),
+@name nvarchar(50)
+)
+AS
+ DECLARE @Count int
+ SELECT @Count = count(*) FROM F_User WHERE @id = f_id
+ if @Count = 0
+	Begin
+		INSERT INTO F_User (f_id, f_pw, f_name, f_join_date, f_last_login_date, f_heart) VALUES (@id, @pw, @name, GETDATE(),GETDATE(), 5)
+		SELECT 'REGISTER_SUCCESS'
+	End
+ ELSE
+	SELECT 'ALREADY_ID_HAVE'

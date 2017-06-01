@@ -1,0 +1,20 @@
+USE [Game]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_CREATE_CHAR]    Script Date: 2017-06-01 ¿ÀÈÄ 9:23:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure [dbo].[USP_CREATE_CHAR]
+	@id nvarchar(50),
+	@nick nvarchar(50)
+AS
+ DECLARE @userIdx int
+ SELECT @userIdx = f_idx FROM F_User WHERE f_id = @id
+ if @userIdx >= 0
+	Begin
+		INSERT INTO F_Char (f_nick, f_level, f_exp, f_user_idx) VALUES (@nick, 1, 0, @userIdx)
+		SELECT 'REGISTER_SUCCESS'
+	End
+else
+	SELECT 'WRONG_ID'
