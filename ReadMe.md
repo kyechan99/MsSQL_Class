@@ -4,6 +4,7 @@
 ## 사용시 유의 해야 할 점
 ### php
 php 파일은 htdocs/DB_Class/ 폴더 경로 안에 모두 넣습니다.
+[g_config.php](php/g_config.php) 파일안에 그에 해당하는 값을 입력해줍니다.
 
 ### unity
 unity 의 scene 은 LoginScene 부터 시작하여야 합니다.
