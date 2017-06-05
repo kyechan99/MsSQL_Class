@@ -1,6 +1,6 @@
 USE [Game]
 GO
-/****** Object:  StoredProcedure [dbo].[USP_CREATE_CHAR]    Script Date: 2017-06-01 오후 9:23:58 ******/
+/****** Object:  StoredProcedure [dbo].[USP_CREATE_CHAR]    Script Date: 2017-06-05 오후 9:42:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,11 +10,17 @@ ALTER procedure [dbo].[USP_CREATE_CHAR]
 	@nick nvarchar(50)
 AS
  DECLARE @userIdx int
+ DECLARE @log nvarchar(50)
  SELECT @userIdx = f_idx FROM F_User WHERE f_id = @id
  if @userIdx >= 0
 	Begin
+		SELECT @log = @id + ' is Create Char : ' + @nick
 		INSERT INTO F_Char (f_nick, f_level, f_exp, f_user_idx) VALUES (@nick, 1, 0, @userIdx)
 		SELECT 'REGISTER_SUCCESS'
 	End
 else
-	SELECT 'WRONG_ID'
+	Begin
+		SELECT @log = @id + ' is Fail Char : Wrong ID'	
+		SELECT 'WRONG_ID'
+	End
+INSERT INTO F_Log (f_date, f_log) VALUES (GETDATE(),  @log)	

@@ -1,6 +1,6 @@
 USE [Game]
 GO
-/****** Object:  StoredProcedure [dbo].[USP_CREATE_USER]    Script Date: 2017-06-01 오후 9:24:20 ******/
+/****** Object:  StoredProcedure [dbo].[USP_CREATE_USER]    Script Date: 2017-06-05 오후 9:43:55 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -13,11 +13,17 @@ ALTER PROCEDURE [dbo].[USP_CREATE_USER]
 )
 AS
  DECLARE @Count int
+ DECLARE @log nvarchar(50)
  SELECT @Count = count(*) FROM F_User WHERE @id = f_id
  if @Count = 0
 	Begin
-		INSERT INTO F_User (f_id, f_pw, f_name, f_join_date, f_last_login_date, f_heart) VALUES (@id, @pw, @name, GETDATE(),GETDATE(), 5)
+		SELECT @log = 'new user ' + @id
+		INSERT INTO F_User (f_id, f_pw, f_name, f_join_date, f_last_login_date, f_heart, f_con_count) VALUES (@id, @pw, @name, GETDATE(),GETDATE(), 5, 1)
 		SELECT 'REGISTER_SUCCESS'
 	End
  ELSE
-	SELECT 'ALREADY_ID_HAVE'
+	Begin
+		SELECT @log = 'fail create user ALREADY ID : ' + @id
+		SELECT 'ALREADY_ID_HAVE'
+	End
+INSERT INTO F_Log (f_date, f_log) VALUES (GETDATE(),  @log)	

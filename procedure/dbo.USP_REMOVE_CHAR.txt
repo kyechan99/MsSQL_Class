@@ -1,0 +1,17 @@
+USE [Game]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_REMOVE_CHAR]    Script Date: 2017-06-05 ¿ÀÈÄ 9:44:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[USP_REMOVE_CHAR]
+	@charIdx int
+AS
+ DECLARE @log nvarchar(50)
+ SELECT @log = f_nick FROM F_Char WHERE f_idx = @charIdx
+ SELECT @log = 'Remove Char : ' + @log
+
+ DELETE FROM F_Char WHERE f_idx = @charIdx
+ INSERT INTO F_Log (f_date, f_log) VALUES (GETDATE(),  @log)	
+ SELECT 'REMOVE'

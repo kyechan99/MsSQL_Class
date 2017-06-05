@@ -35,6 +35,7 @@ public class LobbyScene : MonoBehaviour
         }
         else
         {
+            Debug.Log(GM.ServerMng.base64decoded(www.downloadHandler.text));
             string[] arr = JsonFx.Json.JsonReader.Deserialize<string[]>(GM.ServerMng.base64decoded(www.downloadHandler.text));
 
             idTxt.text = arr[0];
@@ -45,10 +46,10 @@ public class LobbyScene : MonoBehaviour
             heartTxt.text = arr[4];
             GM.ServerMng.user.heart = System.Convert.ToInt32(arr[4]);
 
-            foreach (string ar in arr)
-            {
-                Debug.Log(ar);
-            }
+            //foreach (string ar in arr)
+            //{
+            //    Debug.Log(ar);
+            //}
         }
     }
 

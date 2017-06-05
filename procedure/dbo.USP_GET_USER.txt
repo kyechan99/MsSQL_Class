@@ -1,6 +1,6 @@
 USE [Game]
 GO
-/****** Object:  StoredProcedure [dbo].[USP_GET_USER]    Script Date: 2017-06-01 오후 9:24:53 ******/
+/****** Object:  StoredProcedure [dbo].[USP_GET_USER]    Script Date: 2017-06-05 오후 9:44:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,11 +12,17 @@ ALTER PROCEDURE [dbo].[USP_GET_USER]
 )  
 AS   
  DECLARE @Count int
+ DECLARE @log nvarchar(50)
  SELECT @Count = count(*) FROM F_User WHERE @id = f_id AND @pw = f_pw
  
  if @Count = 1
 	Begin
+		SELECT @log = @id + ' is Request Info'
 		SELECT f_id, f_name, f_join_date, f_last_login_date, f_heart FROM F_User WHERE @id = f_id;
 	End
  ELSE
-	SELECT 'FAIL_LOGIN'
+	Begin
+		SELECT @log = @id + ' is Fail Login : Wrong Request Path'
+		SELECT 'FAIL_LOGIN'
+	End
+INSERT INTO F_Log (f_date, f_log) VALUES (GETDATE(),  @log)	

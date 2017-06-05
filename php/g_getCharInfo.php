@@ -18,15 +18,24 @@ $ret = array();
 
 if ($result==true)
 {
-  while ($row = mssql_fetch_assoc($result)) {
-    $JSONres = array (
-       "nick" => $row['f_nick'],
-       "level" => $row['f_level'],
-       "exp" => $row['f_exp']
-      );
-      array_push($ret, $JSONres);
-  }
-  echo json_encode($ret);
+  do {
+    while($row = mssql_fetch_array($result)) {
+      array_push($ret, $row[0]);
+      array_push($ret, $row[1]);
+      array_push($ret, $row[2]);
+      array_push($ret, $row[3]);
+      array_push($ret, $row[4]);
+    }
+  } while(mssql_next_result($result));
+  // while ($row = mssql_fetch_assoc($result)) {
+  //   $JSONres = array (
+  //      "nick" => $row['f_nick'],
+  //      "level" => $row['f_level'],
+  //      "exp" => $row['f_exp']
+  //     );
+  //     array_push($ret, $JSONres);
+  // }
+  echo base64_encode(json_encode($ret));
   // do {
   //   while($row = mssql_fetch_array($result)) {
   //     echo "DDDDDD".$row[0];

@@ -1,6 +1,6 @@
 USE [Game]
 GO
-/****** Object:  StoredProcedure [dbo].[USP_CHECK_USER]    Script Date: 2017-06-01 오후 9:23:37 ******/
+/****** Object:  StoredProcedure [dbo].[USP_CHECK_USER]    Script Date: 2017-06-05 오후 9:42:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,12 +12,27 @@ ALTER PROCEDURE [dbo].[USP_CHECK_USER]
 )  
 AS   
  DECLARE @Count int
- SELECT @Count = count(*) FROM F_User WHERE @id = f_id AND @pw = f_pw
+ DECLARE @fIdx int
+ DECLARE @lastCon datetime
+ DECLARE @log nvarchar(50)
+ SELECT  @fIdx = F_User.f_idx FROM F_User WHERE @id = f_id AND @pw = f_pw
+ SELECT  @Count = count(*) FROM F_User WHERE @id = f_id AND @pw = f_pw
+ SELECT  @lastCon = f_last_login_date FROM F_User WHERE @id = f_id AND @pw = f_pw
+
  
  if @Count = 1
 	Begin
+		SELECT @log = @id + ' is Login'	
 		UPDATE f_User SET f_last_login_date = GETDATE() WHERE f_id = @id
 		SELECT 'SUCCESS_LOGIN'
+
+		if DAY(@lastCon) != DAY(GETDATE())
+			UPDATE f_User SET f_con_count = (f_con_count + 1) WHERE f_id = @id
+			
 	End
  ELSE
-	SELECT 'FAIL_LOGIN'
+	Begin
+		SELECT @log = @id + ' is Fail Login'	
+		SELECT 'FAIL_LOGIN'
+	End
+INSERT INTO F_Log (f_date, f_log) VALUES (GETDATE(),  @log)	

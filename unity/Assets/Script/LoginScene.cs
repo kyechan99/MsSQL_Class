@@ -47,7 +47,7 @@ public class LoginScene : MonoBehaviour
             }
             else
             {
-                Debug.LogError("WRONG ID or PW");
+                Debug.LogError("WRONG ID or PW : " + www.downloadHandler.text);
             }
         }
     }
